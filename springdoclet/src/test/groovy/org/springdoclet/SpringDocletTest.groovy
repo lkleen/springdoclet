@@ -12,13 +12,15 @@ class SpringDocletTest {
     file.delete()
     assert !file.exists()
 
-    def args = ["-sourcepath", "./sample/src/main/java",
+    def args = ["-sourcepath", "./../sample/src/main/java",
             "-classpath", getClassPath(),
             "-subpackages", "org.springframework.samples.petclinic",
-            "-d", "./sample",
-            "-f", fileName,
-            "-linkpath", "../apidocs/"] as String[]
+            "-d", "./sample"] as String[]
     println "javadoc args=$args"
+    print "javadoc "
+    args.each {a -> print " " + a}
+    println ""
+
     Main.execute "docletTest", SpringDoclet.class.name, args
 
     assert file.exists()

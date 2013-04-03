@@ -11,6 +11,7 @@
 	<packaging>pom</packaging>
 	<modules>
 		<module>springdoclet</module>
+        <module>sample</module>
 	</modules>
 
   <properties>
