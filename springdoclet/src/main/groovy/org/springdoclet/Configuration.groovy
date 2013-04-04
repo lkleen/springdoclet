@@ -9,8 +9,10 @@ class Configuration {
   private static final String DEFAULT_FILENAME = './spring-summary.html'
   private static final String DEFAULT_STYLESHEET = './spring-summary.css'
   private static final String DEFAULT_LINKPATH = './'
+  private static final int DEFAULT_URL_CATEGORIZATION_LEVELS = 1
 
   String[][] options
+  Integer urlCategorizationLevels
 
   def getOutputDirectory() {
     getOption(OPTION_DIRECTORY) ?: DEFAULT_DIRECTORY
@@ -30,6 +32,10 @@ class Configuration {
 
   def getLinkPath() {
     getOption(OPTION_LINKPATH) ?: DEFAULT_LINKPATH
+  }
+
+  public int getUrlCategorizationLevels(){
+    return (urlCategorizationLevels == null)?DEFAULT_URL_CATEGORIZATION_LEVELS: urlCategorizationLevels
   }
 
   private String getOption(String optionName) {

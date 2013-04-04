@@ -6,10 +6,12 @@ import groovy.xml.MarkupBuilder
 import org.springdoclet.Collector
 import org.springdoclet.Annotations
 import org.springdoclet.PathBuilder
+import org.springdoclet.SpringDoclet
 import org.springdoclet.TextUtils
 
 @SuppressWarnings("GroovyVariableNotAssigned")
 class RequestMappingCollector implements Collector {
+
   private static String MAPPING_TYPE = 'org.springframework.web.bind.annotation.RequestMapping'
   private static String METHOD_TYPE = 'org.springframework.web.bind.annotation.RequestMethod.'
 
@@ -21,7 +23,8 @@ class RequestMappingCollector implements Collector {
       def rootPath, defaultHttpMethods
       (rootPath, defaultHttpMethods) = getMappingElements(annotation)
       processMethods classDoc, rootPath ?: "", defaultHttpMethods ?: ['GET']
-    } else {
+    }
+    else {
       processMethods classDoc, "", ['GET']
     }
   }
@@ -91,27 +94,67 @@ class RequestMappingCollector implements Collector {
   }
 
   void writeOutput(MarkupBuilder builder, PathBuilder paths) {
-    builder.div(id:'request-mappings') {
+    builder.div(id: 'request-mappings') {
       h2 'Request Mappings'
       table {
-        def sortedMappings = mappings.sort { it.path }
+        Map<String, List<?>> sorted = sortMappings()
         tr {
+          th 'Category'
           th 'Method'
           th 'URL Template'
           th 'Class'
           th 'Description'
         }
-        for (mapping in sortedMappings) {
+        for (e in sorted) {
           tr {
-            td mapping.httpMethodName
-            td mapping.path
-            td {
-              a(href: paths.buildFilePath(mapping.className), mapping.className)
+            td(colspan: 5, style: "font-weight: bold; font-size: 1.1em;",  e.key )
+
+          }
+          for (m in e.value) {
+            tr {
+              td ""
+              td m.httpMethodName
+              td m.path
+              td {
+                a(href: paths.buildFilePath(m.className), m.className)
+              }
+              td { code { mkp.yieldUnescaped(m.text ?: ' ') } }
             }
-            td { code { mkp.yieldUnescaped(mapping.text ?: ' ') } }
           }
         }
       }
+    }
+  }
+
+  private Map<String, List<?>> sortMappings() {
+    mappings.sort { it.path }
+    Map<String, List<?>> out = new LinkedHashMap<String, List<?>>();
+
+    for (m in mappings) {
+      String prefix = makePrefix(m.path)
+      if (!out.containsKey(prefix)) {
+        out.put(prefix, new ArrayList<?>())
+      }
+
+      out.get(prefix).add(m)
+    }
+
+
+    return out;
+  }
+
+  String makePrefix(String path) {
+    if (path == null || path.length() == 0 || path.length() == 1) {
+      return "/"
+    }
+
+
+    String[] parts = path.split("/")
+    if(parts.length < SpringDoclet.config.getUrlCategorizationLevels() + 1){
+      return path
+    }
+    else {
+      return '/' + parts[1..(SpringDoclet.config.getUrlCategorizationLevels())].join("/")
     }
   }
 }

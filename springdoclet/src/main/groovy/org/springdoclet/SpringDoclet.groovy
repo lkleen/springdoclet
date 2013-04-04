@@ -8,7 +8,8 @@ import org.springdoclet.collectors.RequestMappingCollector
 import org.springdoclet.collectors.ComponentCollector
 
 class SpringDoclet extends Doclet {
-  private static Configuration config = new Configuration()
+
+  public static final Configuration config = new Configuration()
 
   public static boolean start(RootDoc root) {
     ErrorReporter.setErrorReporter(root)
