@@ -13,6 +13,14 @@
     <module>springdoclet</module>
     <module>sample</module>
   </modules>
+  
+  <scm>
+    <connection>scm:git:git@github.com:polpot78/springdoclet.git</connection>
+    <developerConnection>scm:git:git@github.com:polpot78/springdoclet.git</developerConnection>
+    <url>https://github.com/polpot78/springdoclet</url>
+    <tag>HEAD</tag>
+  </scm>
+
 
   <properties>
     <groovy.version>1.7.2</groovy.version>
