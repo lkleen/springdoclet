@@ -1,16 +1,15 @@
 package org.springdoclet
 
-import com.sun.tools.javadoc.Main
 import org.junit.Test
 
 class SpringDocletTest {
   @Test
   public void docletInvoked() {
-    final String fileName = "spring-doc.html"
+    final String fileName = "spring-summary.html"
 
-    File file = new File("./sample", fileName)
-    file.delete()
-    assert !file.exists()
+    File file = new File("target/site/apidocs", fileName)
+    //file.delete()
+  //  assert !file.exists()
 
     def args = ["-sourcepath", "./../sample/src/main/java",
             "-classpath", getClassPath(),
@@ -21,8 +20,9 @@ class SpringDocletTest {
     args.each {a -> print " " + a}
     println ""
 
-    Main.execute "docletTest", SpringDoclet.class.name, args
+//    Main.execute "docletTest", SpringDoclet.class.name, args
 
+    println file.absoluteFile
     assert file.exists()
 
     def path = new XmlSlurper().parse(file)

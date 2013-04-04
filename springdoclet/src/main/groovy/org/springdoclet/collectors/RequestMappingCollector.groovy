@@ -41,9 +41,20 @@ class RequestMappingCollector implements Collector {
   private def processMethod(classDoc, methodDoc, rootPath, defaultHttpMethods, annotation) {
     def (path, httpMethods) = getMappingElements(annotation)
     for (httpMethod in (httpMethods ?: defaultHttpMethods)) {
-      addMapping classDoc, methodDoc, "$rootPath$path", httpMethod
+      def fullpath = makeFullPath(rootPath.toString(), path.toString())
+      addMapping classDoc, methodDoc, fullpath, httpMethod
     }
   }
+
+  private String makeFullPath(String contextPath, String methodPath) {
+
+    String tmp = '/' + contextPath + '/' + methodPath;
+    tmp = tmp.replaceAll("\"", "").replaceAll("//+", "/").replaceAll("/\$", "")
+
+    return tmp
+  }
+
+
 
   private def getMappingAnnotation(annotations) {
     for (annotation in annotations) {

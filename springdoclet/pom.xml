@@ -4,7 +4,7 @@
 
 <parent>
 	<groupId>org.springdoclet</groupId>
-	<artifactId>parent</artifactId>
+	<artifactId>springdoclet-parent</artifactId>
 	<version>0.2-SNAPSHOT</version>
 	<relativePath>../pom.xml</relativePath>
 </parent>
@@ -43,6 +43,10 @@
       <artifactId>spring-web</artifactId>
     </dependency>
     <dependency>
+      <groupId>org.springframework</groupId>
+      <artifactId>spring-webmvc</artifactId>
+    </dependency>
+    <dependency>
       <groupId>org.aspectj</groupId>
       <artifactId>aspectjweaver</artifactId>
     </dependency>
@@ -73,17 +77,6 @@
       <plugin>
         <groupId>org.codehaus.groovy.maven</groupId>
         <artifactId>gmaven-plugin</artifactId>
-        <version>1.0</version>
-        <executions>
-          <execution>
-            <goals>
-              <goal>generateStubs</goal>
-              <goal>compile</goal>
-              <goal>generateTestStubs</goal>
-              <goal>testCompile</goal>
-            </goals>
-          </execution>
-        </executions>
       </plugin>
 
       <plugin>
